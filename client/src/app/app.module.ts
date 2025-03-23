@@ -5,7 +5,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login.component';
-import { RouterModule, Routes } from '@angular/router';
+import { provideRouter, RouterModule, Routes, withHashLocation } from '@angular/router';
 import { NavbarComponent } from './components/navbar.component';
 import { SignupComponent } from './components/signup.component';
 import { UserService } from './service/UserService';
@@ -77,6 +77,8 @@ const appRoutes:Routes = [
     ProductService,
     DealService,
     WebSocketDealService,
+    provideRouter(appRoutes, withHashLocation()),
+
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

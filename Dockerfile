@@ -33,6 +33,7 @@ FROM openjdk:23-jdk
 WORKDIR /app
 
 COPY --from=j-build /build/target/*.jar app.jar
+    
 
 ENV PORT=8080
 EXPOSE 8080
