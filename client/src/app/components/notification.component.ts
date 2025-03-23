@@ -31,12 +31,30 @@ export class NotificationComponent implements OnInit, OnDestroy {
   handleDealUpdate(deal: Deal) {
     let statusMsg = '';
 
-    if (deal.rejected) {
+/*     if (deal.rejected) {
       statusMsg = `Deal ${deal.id} has been REJECTED.`;
     } else if (deal.completed) {
       statusMsg = `Deal ${deal.id} has been COMPLETED.`;
     } else {
       statusMsg = `Deal ${deal.id} was updated. `;
+    } */
+
+    if (deal.rejected) {
+      if (deal.lastUpdatedBy) {
+        statusMsg = `Deal ${deal.id} has been REJECTED by ${deal.lastUpdatedBy}.`;
+      } else {
+        statusMsg = `Deal ${deal.id} has been REJECTED.`;
+      }
+    } 
+    else if (deal.completed) {
+      statusMsg = `Deal ${deal.id} has been COMPLETED.`;
+    } 
+    else {
+      if (deal.lastUpdatedBy) {
+        statusMsg = `Deal ${deal.id} was updated by ${deal.lastUpdatedBy}.`;
+      } else {
+        statusMsg = `Deal ${deal.id} was updated.`;
+      }
     }
 
     this.notifications.unshift(statusMsg);

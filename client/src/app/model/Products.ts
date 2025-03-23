@@ -13,6 +13,7 @@ export interface Product{
 
 export interface DealMessage {
     senderId: string;
+    senderUsername?: string;
     text: string;
     timestamp?: string;
 }
@@ -33,4 +34,7 @@ export interface Deal {
     messages: DealMessage[];
     pendingPayment?: boolean;
     paymentIntentId?: string;
+
+    lastUpdatedBy?: string;
+
 }

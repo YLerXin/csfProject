@@ -104,7 +104,7 @@ public ResponseEntity<?> createProductWithImages(
     @RequestParam("condition") String condition,
     @RequestParam("price") BigDecimal price,
     @RequestParam("tags") String tagsJson,
-    @RequestParam("files") List<MultipartFile> files
+    @RequestParam(value="files",required=false) List<MultipartFile> files
 ) {
     List<String> tags = new ArrayList<>();
     try {
@@ -114,6 +114,10 @@ public ResponseEntity<?> createProductWithImages(
             .body(Map.of("message", "Invalid tags JSON"));
     }
     List<String> uploadedUrls = new ArrayList<>();
+    if (files == null || files.isEmpty()) {
+        String placeholderUrl = "https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/placeholder-images-image_large.webp";
+        uploadedUrls.add(placeholderUrl);
+    }else{
     for (MultipartFile file : files) {
         try {
             String imageUrl = s3Service.uploadProductImage(file, "temp-id-or-uuid"); 
@@ -124,6 +128,7 @@ public ResponseEntity<?> createProductWithImages(
                 .body(Map.of("message", "Failed to upload one of the images"));
         }
     }
+}
     Product product = new Product();
     product.setUserId(userId);
     product.setProductName(productName);

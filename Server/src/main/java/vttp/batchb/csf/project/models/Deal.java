@@ -23,7 +23,14 @@ public class Deal {
 
     private boolean pendingPayment;
     private String paymentIntentId;
-    
+
+    private String lastUpdatedBy;
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
     public boolean isPendingPayment() {
         return pendingPayment;
     }

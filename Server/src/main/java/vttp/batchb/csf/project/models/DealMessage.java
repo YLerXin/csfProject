@@ -6,7 +6,14 @@ public class DealMessage {
     private String senderId;
     private String text;
     private LocalDateTime timestamp;
-    public String getSenderId() {
+    private String senderUsername;
+    public String getSenderUsername() {
+		return senderUsername;
+	}
+	public void setSenderUsername(String senderUsername) {
+		this.senderUsername = senderUsername;
+	}
+	public String getSenderId() {
         return senderId;
     }
     public void setSenderId(String senderId) {

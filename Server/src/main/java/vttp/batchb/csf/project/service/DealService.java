@@ -14,6 +14,7 @@ import com.stripe.param.PaymentIntentCreateParams;
 import vttp.batchb.csf.project.models.Deal;
 import vttp.batchb.csf.project.models.DealMessage;
 import vttp.batchb.csf.project.models.Product;
+import vttp.batchb.csf.project.models.User;
 import vttp.batchb.csf.project.repository.DealRepository;
 import vttp.batchb.csf.project.repository.ProductRepository;
 
@@ -25,6 +26,9 @@ public class DealService {
 
     @Autowired
     private ProductRepository productRepo;
+
+    @Autowired
+    private UserService userService;
 
     public Deal createDeal(Deal deal) {
         deal.setInitiatorAccepted(false);
@@ -54,6 +58,7 @@ public class DealService {
             d.setOwnerItems(ownerItems);
         }
         recalcDifference(d);
+        
         return dealRepo.saveDeal(d);
     }
 
@@ -66,6 +71,14 @@ public class DealService {
         msg.setSenderId(senderId);
         msg.setText(text);
         msg.setTimestamp(LocalDateTime.now());
+
+        User user = userService.getUserById(senderId);
+        if (user != null) {
+          msg.setSenderUsername(user.getUsername());
+        } else {
+          msg.setSenderUsername(senderId); 
+        }
+
         d.getMessages().add(msg);
         return dealRepo.saveDeal(d);
     }
@@ -137,6 +150,10 @@ public class DealService {
             d = dealRepo.saveDeal(d);
         }
     }
+        User user = userService.getUserById(userId);
+        String username = (user != null) ? user.getUsername() : userId;
+        d.setLastUpdatedBy(username);
+        d = dealRepo.saveDeal(d);
         messagingTemplate.convertAndSend("/topic/deals", d);
         return d;
     }
@@ -157,23 +174,7 @@ public class DealService {
         throw new RuntimeException("Failed to create payment intent", e);
     }
 }
-/*     private PaymentIntent createStripePaymentIntent(int finalPriceCents,String sellerAcctId) {
-        PaymentIntentCreateParams createParams = PaymentIntentCreateParams
-            .builder()
-            .setAmount(Long.valueOf(finalPriceCents)) 
-            .setCurrency("sgd")      
-            .setTransferData(
-                PaymentIntentCreateParams.TransferData.builder()
-                    .setDestination(sellerAcctId) 
-                    .build()
-            )           
-            .build();
 
-        try {
-            return PaymentIntent.create(createParams);
-        } catch (StripeException e) {
-            throw new RuntimeException("Failed to create payment intent", e);
-        } */
 
     public Deal rejectDeal(String dealId, String userId) {
         Deal d = dealRepo.findDealById(dealId);
@@ -198,11 +199,18 @@ public class DealService {
             d.setPendingPayment(false);
             d.setPaymentIntentId(null);
         }
+        User user = userService.getUserById(userId);
+        String username = user != null ? user.getUsername() : userId;
+        d.setLastUpdatedBy(username);
 
         d = dealRepo.saveDeal(d);
         revertAvailability(d);
         messagingTemplate.convertAndSend("/topic/deals", d);
         return d;
+    }
+
+    public void broadcastDealUpdate(Deal d) {
+        messagingTemplate.convertAndSend("/topic/deals", d);
     }
 
 

@@ -134,7 +134,7 @@
   <hr />
   <h3>Chat</h3>
   <div *ngFor="let msg of d.messages">
-    <b>{{ msg.senderId }}:</b> {{ msg.text }}
+    <b>{{ msg.senderUsername }}:</b> {{ msg.text }}
   </div>
 
   <form [formGroup]="messageForm" *ngIf="!d.rejected && !d.completed">

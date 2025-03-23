@@ -20,8 +20,8 @@ export class WebSocketDealService {
 
 
     this.stompClient = new Client({
-       brokerURL: 'ws://localhost:8080/ws',
-      //brokerURL: wsUrl,
+       //brokerURL: 'ws://localhost:8080/ws',
+      brokerURL: wsUrl,
         debug: (msg) => console.log('[STOMP]', msg),
       connectHeaders: {}
     });

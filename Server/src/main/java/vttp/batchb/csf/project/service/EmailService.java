@@ -38,11 +38,12 @@ public class EmailService {
             e.printStackTrace();
         }
     }
-
+    @Value("${app.barterUrl}")
+    private String barterUrl;
     private String buildBody(Deal deal) {
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>Thank You for Your Barter!</h1>");
-        sb.append("<p>Your deal has been completed and paid successfully.</p>");
+        sb.append("<p>Your deal has been completed.</p>");
         sb.append("<p><strong>Deal ID:</strong> ").append(deal.getId()).append("</p>");
 
         sb.append("<p>Owner Items:</p><ul>");
@@ -63,8 +64,8 @@ public class EmailService {
 
         sb.append("<p>You can view the details here: ")
         //Change in railway
-          .append("<a href='localhost:4200/barter/")
-          .append(deal.getId()).append("'>View Deal</a></p>");
+        .append("<a href='").append(barterUrl).append("/")
+        .append(deal.getId()).append("'>View Deal</a></p>");
 
         sb.append("<p>Thank you for using our service!</p>");
 

@@ -34,14 +34,8 @@ WORKDIR /app
 
 COPY --from=j-build /build/target/*.jar app.jar
 
-ENV MYSQL_URL="jdbc:mysql://some-host:3306/project" 
-
-
-
-
 ENV PORT=8080
 EXPOSE 8080
-
 
 # ENTRYPOINT
 ENTRYPOINT ["java", "-jar", "app.jar"]

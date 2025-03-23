@@ -30,7 +30,8 @@ export class CreatelistingComponent implements OnInit {
   imagesPreview: string[] = [];
   tempFiles: File[] = [];
 
-  
+  placeholderUrl: string = 'https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/placeholder-images-image_large.webp';
+
   selectedFile?: File;
 
   ngOnInit(): void {

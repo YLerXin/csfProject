@@ -195,7 +195,10 @@ public class DealController {
         User owner = userService.getUserById(ownerId);
         if (owner != null && owner.getEmail() != null) {
             mailService.sendDealCompletionEmail(owner.getEmail(), d);
+            
         }
+        dealSvc.broadcastDealUpdate(d);
+
     
         return ResponseEntity.ok(d);
     }
