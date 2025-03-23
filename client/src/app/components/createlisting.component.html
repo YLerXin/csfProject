@@ -1,0 +1,128 @@
+ <mat-grid-list
+   cols="4"
+   rowHeight="200"
+   gutterSize="16px"
+ >
+   <mat-grid-tile
+     [colspan]="1"
+     [rowspan]="1"
+   >
+     <div class="carousel-container">
+       <ng-container *ngIf="imagesPreview.length > 0; else noImages">
+         <ngb-carousel>
+           <ng-template
+             ngbSlide
+             *ngFor="let imgUrl of imagesPreview; let i = index"
+           >
+             <div class="picsum-img-wrapper">
+               <img
+                 [src]="imgUrl"
+                 [alt]="'Slide ' + i"
+                 style="width: 200px; height: 200px; object-fit: cover;"
+               />
+             </div>
+             <div class="carousel-caption">
+               <h3></h3>
+             </div>
+           </ng-template>
+         </ngb-carousel>
+       </ng-container>
+       <ng-template #noImages>
+         <p>No images entered yet</p>
+       </ng-template>
+     </div>
+   </mat-grid-tile>
+ 
+   <mat-grid-tile
+     [colspan]="3"
+     [rowspan]="2"
+   >
+     <div class="form-container">
+       <form [formGroup]="listingForm" (ngSubmit)="onSubmit()">
+         <mat-form-field appearance="fill">
+           <mat-label>Product Name</mat-label>
+           <input matInput formControlName="productName" required />
+           <mat-error
+             *ngIf="listingForm.get('productName')?.hasError('required')"
+             >Product name is required</mat-error
+           >
+         </mat-form-field>
+ 
+         <div>
+           <label>Condition: </label>
+           <mat-slide-toggle
+             color="accent"
+             [checked]="listingForm.value.condition === 'New'"
+             (change)="onConditionToggle($event.checked)"
+           >
+             {{ listingForm.value.condition === 'New' ? 'New' : 'Used' }}
+           </mat-slide-toggle>
+         </div>
+ 
+         <mat-form-field appearance="fill">
+           <mat-label>Price</mat-label>
+           <input matInput type="number" formControlName="price" />
+         </mat-form-field>
+ 
+         <mat-form-field class="tag-field" appearance="fill">
+           <mat-label>Tags</mat-label>
+           <mat-chip-grid #chipGrid [formControl]="tagsControl" aria-label="Tags">
+             <mat-chip-row
+               *ngFor="let tag of tagsControl.value"
+               (removed)="removeTag(tag)"
+             >
+               {{ tag }}
+               <button matChipRemove aria-label="Remove tag">
+                 <mat-icon>cancel</mat-icon>
+               </button>
+             </mat-chip-row>
+           </mat-chip-grid>
+           <input
+             placeholder="New tag..."
+             [matChipInputFor]="chipGrid"
+             (matChipInputTokenEnd)="addTag($event)"
+           />
+         </mat-form-field>
+ 
+         <mat-form-field appearance="fill">
+           <mat-label>Product Details</mat-label>
+           <textarea matInput rows="4" formControlName="productDetails"></textarea>
+         </mat-form-field>
+ 
+         <button
+           mat-stroked-button
+           color="primary"
+           type="submit"
+           [disabled]="listingForm.invalid"
+         >
+           Create
+         </button>
+       </form>
+     </div>
+   </mat-grid-tile>
+ 
+   <mat-grid-tile
+     [colspan]="1"
+     [rowspan]="1"
+   >
+     <form>
+       <button
+         mat-stroked-button
+         color="accent"
+         type="button"
+         class="choose-file-btn"
+         (click)="fileInput.click()"
+       >
+         Choose File
+       </button>
+       <input
+         #fileInput
+         type="file"
+         (change)="onFileChange($event)"
+         style="display: none"
+         multiple
+       />
+     </form>
+   </mat-grid-tile>
+ </mat-grid-list>
+ 

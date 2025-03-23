@@ -1,0 +1,150 @@
+<div *ngIf="error" style="color:red">{{ error }}</div>
+
+<div *ngIf="deal as d">
+  <h2>Deal: {{ d.id }}</h2>
+  <h2><p>Price Difference: <strong>${{ finalPriceDifference }}</strong></p></h2>
+
+  <div *ngIf="d.pendingPayment && !d.completed && !d.rejected">
+
+  <h3><p>The deal has been accepted by both parties and is pending payment.</p></h3>
+  </div>
+  <div *ngIf="d.pendingPayment && !d.completed && !d.rejected">
+
+    <div *ngIf="currentUserId === d.initiatorId">
+      <p>You need to pay ${{ finalPriceDifference }} to complete this deal.</p>
+      <button (click)="togglePaymentForm()">
+        {{ showPaymentForm ? 'Hide Payment' : 'Pay with Card' }}
+      </button>
+      <div [class.hidden]="!showPaymentForm">
+        <div id="card-element"></div>
+        <button (click)="payDeal()">Pay Now</button>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="d.completed">
+    <h3>This deal is completed. No further changes.</h3>
+  </div>
+  <div *ngIf="d.rejected">
+    <h3>This deal is rejected.</h3>
+  </div>
+
+  <div *ngIf="!d.rejected">
+    <h3>Owner Items</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button (click)="ownerPrevPage()" [disabled]="!ownerHasPrev()">
+        &laquo; Prev
+      </button>
+      <div class="d-flex" style="gap: 10px;">
+        <div
+          class="card listing-card"
+          style="width: 200px;"
+          *ngFor="let item of getOwnerPageItems()"
+        >
+          <img
+            [src]="item.images?.[0] || 'placeholder.jpg'"
+            class="card-img-top listing-img"
+            style="max-width: 100%;"
+            alt="..."
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ item.productName }}</h4>
+            <p class="card-text">Condition: {{ item.condition }}</p>
+            <p class="card-text">Price: {{ item.price }}</p>
+            <p class="card-text">{{ item.productDetails }}</p>
+          </div>
+        </div>
+      </div>
+      <button (click)="ownerNextPage()" [disabled]="!ownerHasNext()">
+        Next &raquo;
+      </button>
+    </div>
+    <div *ngIf="!d.completed && !d.rejected">
+
+    <button (click)="goPickItems('owner')" [disabled]="d.pendingPayment">Add Owner's Items</button>
+    </div>
+    <br /><br />
+    <h3>Initiator Items</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button (click)="initPrevPage()" [disabled]="!initHasPrev()">
+        &laquo; Prev
+      </button>
+      <div class="d-flex" style="gap: 10px;">
+        <div
+          class="card listing-card"
+          style="width: 200px;"
+          *ngFor="let item of getInitiatorPageItems()"
+        >
+          <img
+            [src]="item.images?.[0] || 'placeholder.jpg'"
+            class="card-img-top listing-img"
+            style="max-width: 100%;"
+            alt="..."
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ item.productName }}</h4>
+            <p class="card-text">Condition: {{ item.condition }}</p>
+            <p class="card-text">Price: {{ item.price }}</p>
+            <p class="card-text">{{ item.productDetails }}</p>
+          </div>
+        </div>
+      </div>
+      <button (click)="initNextPage()" [disabled]="!initHasNext()">
+        Next &raquo;
+      </button>
+    </div>
+    <div *ngIf="!d.completed && !d.rejected">
+
+    <button (click)="goPickItems('initiator')" [disabled]="d.pendingPayment">Add Initiator's Items</button>
+
+    <button (click)="acceptDeal()" [disabled]="!(d.meetingLocation && d.meetingDateTime) || d.pendingPayment">Accept Deal</button>
+    <button (click)="rejectDeal()">Reject Deal</button>
+    </div>
+    <hr />
+    <h3>Meeting</h3>
+    <div *ngIf="d.meetingLocation && d.meetingDateTime; else noMeeting">
+      <p>
+        <strong>Current Meeting Details:</strong><br />
+        Location: {{ d.meetingLocation }}<br />
+        Date/Time: {{ d.meetingDateTime }}
+      </p>
+    </div>
+    <ng-template #noMeeting>
+      <p><em>No meeting scheduled yet.</em></p>
+    </ng-template>
+    <div *ngIf="!d.completed && !d.rejected">
+
+    <form [formGroup]="meetingForm">
+      <label for="location">Location: </label>
+      <input id="location" formControlName="location" type="text" />
+      <label for="dateTime">Date/Time: </label>
+      <input id="dateTime" formControlName="dateTime" type="datetime-local" />
+      <button
+        type="button"
+        (click)="updateMeeting()"
+        [disabled]="meetingForm.invalid"
+      >
+        Suggest Meeting
+      </button>
+    </form>
+    </div>
+  </div>
+
+
+  <hr />
+  <h3>Chat</h3>
+  <div *ngFor="let msg of d.messages">
+    <b>{{ msg.senderId }}:</b> {{ msg.text }}
+  </div>
+
+  <form [formGroup]="messageForm" *ngIf="!d.rejected && !d.completed">
+    <input formControlName="text" placeholder="Enter your message" />
+    <button
+      type="button"
+      (click)="sendMessage()"
+      [disabled]="messageForm.invalid"
+    >
+      Send
+    </button>
+  </form>
+</div>

@@ -1,0 +1,46 @@
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f7f7;
+  }
+  
+  .picsum-img-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .owner-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .owner-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .owner-info a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #0066cc;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 8px;
+  }
+  

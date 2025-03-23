@@ -1,0 +1,76 @@
+<h2>My Deals</h2>
+
+<div *ngIf="error" style="color:red">{{ error }}</div>
+<div *ngIf="loading">Loading deals...</div>
+
+<h3>Pending Deals</h3>
+<div *ngIf="!loading && pendingDeals.length > 0; else noPending">
+  <ul>
+    <li *ngFor="let d of pendingDeals">
+      <p>
+        <strong>Deal {{ d.id }}</strong>
+        <a [routerLink]="['/barter', d.id]">Open Deal</a>
+      </p>
+      <p>
+        Owner:
+        <span *ngIf="d.ownerId === userId">You</span>
+        <span *ngIf="d.ownerId !== userId">{{ usernameMap[d.ownerId] }}</span>
+        <br>
+
+        Initiator:
+        <span *ngIf="d.initiatorId === userId">You</span>
+        <span *ngIf="d.initiatorId !== userId">{{ usernameMap[d.initiatorId] }}</span>
+      </p>
+    </li>
+  </ul>
+</div>
+<ng-template #noPending>
+  <p>No pending deals.</p>
+</ng-template>
+
+<h3>Completed Deals</h3>
+<div *ngIf="!loading && completedDeals.length > 0; else noCompleted">
+  <ul>
+    <li *ngFor="let d of completedDeals">
+      <p>
+        <strong>Deal {{ d.id }}</strong>
+        <a [routerLink]="['/barter', d.id]">Open Deal</a>
+      </p>
+      <p>
+        Owner:
+        <span *ngIf="d.ownerId === userId">You</span>
+        <span *ngIf="d.ownerId !== userId">{{ usernameMap[d.ownerId] }}</span>
+        <br>
+        Initiator:
+        <span *ngIf="d.initiatorId === userId">You</span>
+        <span *ngIf="d.initiatorId !== userId">{{ usernameMap[d.initiatorId] }}</span>
+      </p>
+    </li>
+  </ul>
+</div>
+<ng-template #noCompleted>
+  <p>No completed deals.</p>
+</ng-template>
+
+<h3>Rejected Deals</h3>
+<div *ngIf="!loading && rejectedDeals.length > 0; else noRejected">
+  <ul>
+    <li *ngFor="let d of rejectedDeals">
+      <p>
+        <strong>Deal {{ d.id }}</strong>
+        <a [routerLink]="['/barter', d.id]">Open Deal</a>
+      </p>
+      <p>
+        Owner:
+        <span *ngIf="d.ownerId === userId">You</span>
+        <span *ngIf="d.ownerId !== userId">{{ d.ownerId }}</span><br>
+        Initiator:
+        <span *ngIf="d.initiatorId === userId">You</span>
+        <span *ngIf="d.initiatorId !== userId">{{ d.initiatorId }}</span>
+      </p>
+    </li>
+  </ul>
+</div>
+<ng-template #noRejected>
+  <p>No rejected deals.</p>
+</ng-template>

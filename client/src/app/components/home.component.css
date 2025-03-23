@@ -1,0 +1,53 @@
+.error-message {
+    color: red;
+    margin: 1rem 0;
+  }
+  
+  .home-listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 1rem 0;
+  }
+  
+  .home-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .home-listing-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  
+  .listing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .listing-title {
+    font-weight: 600;
+  }
+  
+  .listing-condition {
+    font-size: 0.9rem;
+  }
+  
+  .listing-price {
+    font-size: 0.9rem;
+  }
+  
+  .listing-user a {
+    text-decoration: underline;
+    color: #0066cc;
+    cursor: pointer;
+  }
+  

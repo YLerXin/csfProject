@@ -1,0 +1,35 @@
+<mat-divider></mat-divider>
+
+<mat-card>
+  <h2>Login</h2>
+  
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+    
+    <div *ngIf="message" [style.color]="error ? 'red' : 'green'">
+      {{ message }}
+    </div>
+
+    <mat-form-field appearance="fill" class="example-form-field">
+      <mat-label>Email</mat-label>
+      <input matInput type="text" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="example-form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-stroked-button color="accent" type="submit">
+        Login
+      </button>
+
+      <button mat-stroked-button color="accent" type="button" (click)="goToSignup()">
+        Go to Sign Up
+      </button>
+    </div>
+  </form>
+
+</mat-card>
+
+<mat-divider></mat-divider>

@@ -1,0 +1,11 @@
+.hidden {
+    display: none;
+  }
+.listing-card {
+  width: 200px;
+}
+.listing-img {
+  max-width: 100%;
+  height: auto;
+}
+  

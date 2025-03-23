@@ -1,0 +1,105 @@
+<mat-grid-list cols="4" rowHeight="600px" gutterSize="16px">
+    <mat-grid-tile [colspan]="1">
+      <div class="left-profile-tile">
+        <img
+          [src]="(user$ | async)?.profilePicUrl || 'https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/defaultavatar.jpg'"
+          alt="Profile"
+          width="200"
+          height="200"
+        />
+        <div>
+          <h3>User: {{ (user$ | async)?.username }}</h3>
+          <p>ID: {{ (user$ | async)?.userId }}</p>
+          <p *ngIf="(user$ | async)?.preferredMeetingLocation">
+            Location: {{ (user$ | async)?.preferredMeetingLocation }}
+          </p>
+        </div>
+        <h4>Interests</h4>
+        <div class="tag-list">
+          <div *ngFor="let t of tagsControl.value" class="tag-item">
+            {{ t }}
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  
+    <mat-grid-tile [colspan]="3">
+      <div class="right-form-tile">
+        <h4>Change Profile Image</h4>
+        <div class="preview-container" [hidden]="!dataUri">
+            <img
+              [src]="dataUri"
+              alt="preview"
+              class="preview-img"
+            />
+          </div>
+        <form [formGroup]="form">
+          <button
+            mat-stroked-button
+            color="accent"
+            type="button"
+            class="choose-file-btn"
+            (click)="fileInput.click()"
+          >
+            Choose File
+          </button>
+          <input
+            #fileInput
+            type="file"
+            (change)="onFileChange($event)"
+            style="display:none"
+          />
+  
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="uploadProfilePic()"
+          >
+            Upload
+          </button>
+        </form>
+        <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Preferred Meeting Location</mat-label>
+            <input matInput [formControl]="meetingLocationControl" />
+          </mat-form-field>
+          
+          <button mat-stroked-button color="accent" (click)="savePreferredLocation()">
+            Prefered Meeting Location
+          </button>
+        </div>
+        <section>
+          <h4>Interest Tags</h4>
+          <mat-form-field class="interest-form-field" appearance="fill">
+            <mat-label>Enter your interests</mat-label>
+            <mat-chip-grid #chipGrid [formControl]="tagsControl" aria-label="User interest tags">
+              <mat-chip-row
+                *ngFor="let tag of tagsControl.value"
+                (removed)="removeTag(tag)"
+              >
+                {{ tag }}
+                <button matChipRemove aria-label="Remove tag">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input
+              placeholder="New tag..."
+              [matChipInputFor]="chipGrid"
+              (matChipInputTokenEnd)="addTag($event)"
+            />
+          </mat-form-field>
+  
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="saveTags()"
+          >
+            Save Tags
+          </button>
+        </section>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  

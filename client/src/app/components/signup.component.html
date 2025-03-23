@@ -1,0 +1,48 @@
+
+   <mat-divider></mat-divider>
+
+<mat-card>
+  <h2>Sign Up</h2>
+  
+  <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="signup-form">
+
+    <div *ngIf="message" [style.color]="error ? 'red' : 'green'">
+      {{ message }}
+    </div>
+
+    <div class="username-row">
+      <mat-form-field appearance="fill" class="example-form-field">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="username" />
+      </mat-form-field>
+      
+      <button mat-stroked-button color="accent" type="button"   class="check-availability-button"
+      (click)="checkAval()">
+        Check Avaliability
+      </button>
+    </div>
+
+    <mat-form-field appearance="fill" class="example-form-field">
+      <mat-label>Email</mat-label>
+      <input matInput type="text" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="example-form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <div class="button-row">
+      <button
+        mat-stroked-button
+        color="primary"
+        type="submit"
+        [disabled]="!usernameChecked || !usernameAvailable"
+      >
+        Sign Up
+      </button>
+    </div>
+  </form>
+</mat-card>
+
+<mat-divider></mat-divider>

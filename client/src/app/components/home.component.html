@@ -1,0 +1,35 @@
+<div *ngIf="loading">Loading listings...</div>
+<div *ngIf="error" class="error-message">{{ error }}</div>
+
+<div *ngIf="!loading && !error">
+  <h2>All Listings</h2>
+
+  <div *ngIf="displayedListings.length === 0">No products found</div>
+
+  <div class="home-listings-grid">
+    <div class="home-card" *ngFor="let item of displayedListings">
+      <img
+        [src]="item.images?.[0] || 'placeholder.jpg'"
+        alt="Product Image"
+        class="home-listing-img"
+        (click)="goToListing(item.productId)"
+      />
+      <div class="listing-info">
+        <div class="listing-title">{{ item.productName }}</div>
+        <div class="listing-condition">Condition: {{ item.condition }}</div>
+        <div class="listing-price">Price: {{ item.price }}</div>
+        <div class="listing-user">
+          <span>Posted by:</span>
+          <a (click)="goToProfile(item.userId)">{{ item.username || 'Unknown' }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-paginator
+    [length]="listings.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPaginateChange($event)"
+  ></mat-paginator>
+</div>

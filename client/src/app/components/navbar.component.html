@@ -1,0 +1,85 @@
+<nav class="navbar bg-body-tertiary">
+    <div class="container">
+      <div class="row align-items-center w-100">
+        
+        <div class="col-auto">
+          <a
+            class="navbar-brand d-flex align-items-center"
+            style="cursor:pointer;"
+            (click)="goHome()"
+          >
+            <img
+              src="https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/Tradiocrop.png"
+              alt="App Icon"
+              width="50"
+              height="50"
+              class="d-inline-block align-text-top me-2"
+            />
+          </a>
+        </div>
+        
+        <div class="col">
+          <form [formGroup]="searchForm" class="d-flex align-items-center">
+            <input
+              class="form-control me-2 flex-grow-1"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              formControlName="searchText"
+            />
+            <button class="btn btn-outline-success" type="button" (click)="onSearch()">
+              Search
+            </button>
+          </form>
+        </div>
+        
+        <div class="col-auto">
+          <ng-container *ngIf="(isLoggedIn$ | async) as loggedIn; else noUser">
+            <div *ngIf="loggedIn" class="dropdown">
+              <a
+                class="nav-link dropdown-toggle d-flex align-items-center"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  [src]="(userPic$ | async) || 'https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/defaultavatar.jpg'"
+                  alt="Profile"
+                  width="40"
+                  height="40"
+                  class="rounded-circle me-2"
+                />
+                {{ (userName$ | async) || 'User' }}
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                  <a class="dropdown-item" (click)="goAccount()">Account</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="goHistory()">Deals</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <a class="dropdown-item" (click)="goCreateListing()">Add Listing</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="onLogout()">Logout</a>
+                </li>
+              </ul>
+
+            </div>
+
+
+          </ng-container>
+        </div>
+  
+      </div> 
+    </div> 
+  </nav>
+  
+  <ng-template #noUser>
+    <button class="btn btn-primary" (click)="goLogin()">Login</button>
+  </ng-template>
+  

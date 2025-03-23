@@ -1,0 +1,24 @@
+<h2>Pick Items</h2>
+
+<div *ngIf="error" style="color:red">{{ error }}</div>
+<div *ngIf="loading">Loading your items...</div>
+
+<div *ngIf="!loading && userItems.length > 0">
+  <ul>
+    <li *ngFor="let item of userItems">
+      <input
+        type="checkbox"
+        [checked]="isSelected(item)"
+        (change)="toggleSelection(item)"
+      />
+      {{ item.productName }} ({{ item.price }})
+    </li>
+  </ul>
+  <button (click)="goBack()">Cancel</button>
+  <button (click)="confirmPick()">Confirm</button>
+</div>
+
+<div *ngIf="!loading && userItems.length === 0">
+  <p>You have no items to add.</p>
+  <button (click)="goBack()">Close</button>
+</div>

@@ -1,0 +1,42 @@
+mat-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .example-form-field {
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .username-row {
+    display: flex;
+    gap: 8px; 
+    width: 100%;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+
+  
+  .button-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .check-availability-button {
+    width: 295px;
+  }
+  
+  .check-availability-button .mat-mdc-button-label {
+    font-size: 6px;  
+    white-space: nowrap;
+  }
+  

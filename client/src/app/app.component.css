@@ -1,0 +1,5 @@
+.content-container {
+    /* Push content down so it doesn’t overlap the navbar */
+    margin-top: 0px; /* adjust to match your navbar height */
+    padding: 16px;    /* optional: add some side padding */
+  }
