@@ -1,5 +1,6 @@
 package vttp.batchb.csf.project.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -118,14 +119,16 @@ public class DealService {
     }
 
     private void recalcDifference(Deal d) {
-        int sumInitiator = d.getInitiatorItems().stream()
-            .mapToInt(p -> p.getPrice().intValue())
-            .sum();
-        int sumOwner = d.getOwnerItems().stream()
-            .mapToInt(p -> p.getPrice().intValue())
-            .sum();
-        d.setFinalPriceDifference(sumOwner - sumInitiator);
-    }
+        BigDecimal sumInitiator = d.getInitiatorItems().stream()
+            .map(Product::getPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    
+        BigDecimal sumOwner = d.getOwnerItems().stream()
+            .map(Product::getPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    
+            d.setFinalPriceDifference(sumOwner.subtract(sumInitiator));
+        }
 
     public Deal updateMeeting(String dealId, String location, LocalDateTime dateTime) {
         Deal d = dealRepo.findDealById(dealId);
@@ -162,8 +165,8 @@ public class DealService {
         d = dealRepo.saveDeal(d);
 
         if (d.isInitiatorAccepted() && d.isOwnerAccepted()) {
-        if (d.getFinalPriceDifference() > 0) {
-            PaymentIntent intent = createStripePaymentIntent(d.getFinalPriceDifference()*100);
+        if (d.getFinalPriceDifference().compareTo(BigDecimal.ZERO) > 0) {
+            PaymentIntent intent = createStripePaymentIntent(d.getFinalPriceDifference());
             d.setPendingPayment(true);        
             d.setPaymentIntentId(intent.getId()); 
             d = dealRepo.saveDeal(d);
@@ -183,10 +186,14 @@ public class DealService {
         return dealRepo.findDealsForUser(userId);
     }
 
-    private PaymentIntent createStripePaymentIntent(int finalPriceCents) {
-    PaymentIntentCreateParams createParams = PaymentIntentCreateParams
+    private PaymentIntent createStripePaymentIntent(BigDecimal finalPrice) {
+        long amountInCents = finalPrice
+        .multiply(BigDecimal.valueOf(100))
+        .longValue();
+    
+        PaymentIntentCreateParams createParams = PaymentIntentCreateParams
         .builder()
-        .setAmount(Long.valueOf(finalPriceCents)) 
+        .setAmount(Long.valueOf(amountInCents)) 
         .setCurrency("sgd")                 
         .build();
 

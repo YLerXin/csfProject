@@ -1,5 +1,6 @@
 package vttp.batchb.csf.project.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -171,8 +172,9 @@ public class DealController {
             if (connectedAcctId == null) {
                 System.out.println("Owner has no stripe_account_id");
             } else {
-                long amountCents = d.getFinalPriceDifference() * 100L;
-                
+                long amountCents = d.getFinalPriceDifference()
+                                    .multiply(BigDecimal.valueOf(100L))
+                                    .longValue();                 
                 TransferCreateParams params = TransferCreateParams.builder()
                     .setAmount(amountCents)
                     .setCurrency("sgd")

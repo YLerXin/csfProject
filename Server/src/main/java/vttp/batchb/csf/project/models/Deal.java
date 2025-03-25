@@ -1,5 +1,6 @@
 package vttp.batchb.csf.project.models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Deal {
 
     private List<Product> initiatorItems = new ArrayList<>();
     private List<Product> ownerItems = new ArrayList<>();
-    private Integer finalPriceDifference;
+    private BigDecimal finalPriceDifference;
     private String meetingLocation;
     private LocalDateTime meetingDateTime;
     private List<DealMessage> messages = new ArrayList<>();
@@ -104,10 +105,10 @@ public class Deal {
     public void setOwnerItems(List<Product> ownerItems) {
         this.ownerItems = ownerItems;
     }
-    public Integer getFinalPriceDifference() {
+    public BigDecimal getFinalPriceDifference() {
         return finalPriceDifference;
     }
-    public void setFinalPriceDifference(Integer finalPriceDifference) {
+    public void setFinalPriceDifference(BigDecimal finalPriceDifference) {
         this.finalPriceDifference = finalPriceDifference;
     }
     public String getMeetingLocation() {
