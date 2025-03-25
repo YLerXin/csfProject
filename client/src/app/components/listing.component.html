@@ -1,41 +1,33 @@
-<mat-grid-list cols="4" rowHeight="400px" gutterSize="16px">
+<mat-grid-list cols="2" rowHeight="400px" gutterSize="16px">
+  <mat-grid-tile>
+    <div class="carousel-container">
+      <ng-container *ngIf="product?.images?.length > 0; else noImages">
+        <ngb-carousel>
+          <ng-template ngbSlide *ngFor="let imgUrl of product.images; let i = index">
+            <div class="picsum-img-wrapper">
+              <img
+                [src]="imgUrl"
+                [alt]="'Slide ' + i"
+                style="width: 300px; height: 300px; object-fit: cover;"
+              />
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </ng-container>
+      <ng-template #noImages>
+        <p>No images</p>
+      </ng-template>
+    </div>
+  </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="2" [rowspan]="2">
-      <div class="carousel-container">
-        <ng-container *ngIf="product?.images?.length > 0; else noImages">
-          <ngb-carousel>
-            <ng-template ngbSlide *ngFor="let imgUrl of product.images; let i = index">
-              <div class="picsum-img-wrapper">
-                <img
-                  [src]="imgUrl"
-                  [alt]="'Slide ' + i"
-                  style="width: 300px; height: 300px; object-fit: cover;"
-                />
-              </div>
-            </ng-template>
-          </ngb-carousel>
-        </ng-container>
-        <ng-template #noImages>
-          <p>No images</p>
-        </ng-template>
-      </div>
-    </mat-grid-tile>
-  
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
-      <div class="info-container">
-        <h2>{{ product?.productName }}</h2>
-        <p>Date Added: {{ product?.dateAdded }}</p>
-        <p>Condition: {{ product?.condition }}</p>
-        <p>Price: {{ product?.price }}</p>
-        <p>Description:{{ product?.productDetails }}</p>
-        <button mat-stroked-button color="primary" (click)="goToBarter(product?.productId)"   *ngIf="product?.userId !== currentUserId"
-        >
-          Barter
-        </button>
-      </div>
-    </mat-grid-tile>
-  
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+  <mat-grid-tile>
+    <div class="info-container">
+      <h2>{{ product?.productName }}</h2>
+      <p>Date Added: {{ product?.dateAdded }}</p>
+      <p>Condition: {{ product?.condition }}</p>
+      <p>Price: {{ product?.price }}</p>
+      <p>Description: {{ product?.productDetails }}</p>
+
       <div class="owner-container" *ngIf="productUser">
         <img
           [src]="productUser.profilePicUrl || 'https://csfprojectlx.sgp1.cdn.digitaloceanspaces.com/defaultavatar.jpg'"
@@ -47,8 +39,17 @@
           <a (click)="goToProfile(productUser.userId)">{{ productUser.username }}</a>
         </div>
       </div>
-      <div *ngIf="error" class="error-message">{{ error }}</div>
-    </mat-grid-tile>
-  
-  </mat-grid-list>
-  
+
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="goToBarter(product?.productId)"
+        *ngIf="product?.userId !== currentUserId"
+      >
+        Barter
+      </button>
+    </div>
+
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+  </mat-grid-tile>
+</mat-grid-list>

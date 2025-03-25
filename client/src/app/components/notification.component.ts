@@ -62,4 +62,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.notifications.pop();
     }
   }
+  removeNotification(index: number) {
+    this.notifications.splice(index, 1);
+  }
 }

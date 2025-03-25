@@ -51,6 +51,9 @@ public class DealService {
         if (d.isCompleted() || d.isRejected() || d.isPendingPayment()) {
             return null;
         }
+        d.setInitiatorAccepted(false);
+        d.setOwnerAccepted(false);
+
         if (initiatorItems != null) {
             d.setInitiatorItems(initiatorItems);
         }
@@ -58,7 +61,9 @@ public class DealService {
             d.setOwnerItems(ownerItems);
         }
         recalcDifference(d);
-        
+     
+        messagingTemplate.convertAndSend("/topic/deals", d);
+
         return dealRepo.saveDeal(d);
     }
 
@@ -117,8 +122,16 @@ public class DealService {
         Deal d = dealRepo.findDealById(dealId);
         if (d == null) return null;
         if (d.isCompleted() || d.isRejected()|| d.isPendingPayment()) return d;
+        
+        d.setInitiatorAccepted(false);
+        d.setOwnerAccepted(false);
+    
         d.setMeetingLocation(location);
         d.setMeetingDateTime(dateTime);
+
+        messagingTemplate.convertAndSend("/topic/deals", d);
+
+
         return dealRepo.saveDeal(d);
     }
 

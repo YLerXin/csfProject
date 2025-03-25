@@ -1,11 +1,46 @@
 .hidden {
-    display: none;
-  }
+  display: none;
+}
+
 .listing-card {
   width: 200px;
+  min-width: 180px;
 }
+
 .listing-img {
   max-width: 100%;
-  height: auto;
+  height: 130px; 
+  object-fit: cover;
 }
-  
+
+.card {
+  border-radius: 8px; 
+}
+
+.card-header {
+  background-color: #f8f9fa; 
+  border-bottom: 1px solid #e9ecef;
+}
+
+.card-body {
+  padding: 1rem;
+}
+.sticky-price-box {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;  
+  z-index: 9999;
+  background-color: #fff; 
+  border: 1px solid #ccc;
+  border-radius: 8px; 
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.price-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+

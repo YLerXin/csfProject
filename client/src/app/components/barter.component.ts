@@ -38,8 +38,12 @@ export class BarterComponent implements OnInit,AfterViewInit  {
   meetingForm!: FormGroup;
 
   
+  minDateTime?: string;
 
   async ngOnInit(): Promise<void> {
+    const now = new Date();
+    this.minDateTime = now.toISOString().slice(0, 16);
+
     this.messageForm = this.fb.group({
       text: ['', Validators.required]
     });
@@ -302,5 +306,46 @@ export class BarterComponent implements OnInit,AfterViewInit  {
     if (this.initHasPrev()) {
       this.initPageIndex--;
     }
+  }
+
+  removeOwnerItem(item: Product) {
+    if (!this.deal) return;
+      this.deal.ownerItems = this.deal.ownerItems.filter(
+      i => i.productId !== item.productId
+    );
+      this.dealSvc.updateDealItems(
+      this.deal.id!,
+      this.deal.initiatorItems,
+      this.deal.ownerItems
+    ).subscribe({
+      next: (updatedDeal) => {
+        this.deal = updatedDeal;
+        this.computeFinalDifference(); 
+      },
+      error: () => {
+        this.error = 'Could not remove owner item.';
+      }
+    });
+  }
+  
+  removeInitiatorItem(item: Product) {
+    if (!this.deal) return;
+    this.deal.initiatorItems = this.deal.initiatorItems.filter(
+      i => i.productId !== item.productId
+    );
+  
+    this.dealSvc.updateDealItems(
+      this.deal.id!,
+      this.deal.initiatorItems,
+      this.deal.ownerItems
+    ).subscribe({
+      next: (updatedDeal) => {
+        this.deal = updatedDeal;
+        this.computeFinalDifference();
+      },
+      error: () => {
+        this.error = 'Could not remove initiator item.';
+      }
+    });
   }
 }

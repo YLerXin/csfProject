@@ -1,0 +1,13 @@
+.notification-panel {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 300px;         
+    margin-top: 60px; 
+  }
+  
+  .custom-alert {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
