@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoginService } from '../service/login.service';
 import { selectUser, selectUserName, selectUserPic } from '../utils/auth.selectors';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { User } from '../model/AuthRequest';
 import { loginSuccess, logoutSuccess } from '../utils/auth.actions';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -75,5 +75,14 @@ export class NavbarComponent implements OnInit{
   }
   goCreateListing() {
     this.router.navigate(['/create-listing']);
+  }
+  goMyProfile() {
+    this.user$.pipe(take(1)).subscribe(user => {
+      if (!user) {
+        return;
+      }
+      const userId = user.userId;
+      this.router.navigate(['/profile', userId]);
+    });
   }
 }
