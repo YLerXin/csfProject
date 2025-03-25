@@ -14,9 +14,13 @@ import jakarta.mail.internet.MimeMessage;
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final UserService userService;
+
     
-    public EmailService(JavaMailSender mailSender) {
+    public EmailService(JavaMailSender mailSender,UserService userService) {
         this.mailSender = mailSender;
+        this.userService = userService;
+
     }
 
     public void sendDealCompletionEmail(String toEmail, Deal deal) {
@@ -69,6 +73,30 @@ public class EmailService {
         .append(deal.getId()).append("'>View Deal</a></p>");
 
         sb.append("<p>Thank you for using our service!</p>");
+
+        String ownerEmail = "";
+        String initiatorEmail = "";
+        try {
+            var owner = userService.getUserById(deal.getOwnerId());
+            if (owner != null && owner.getEmail() != null) {
+                ownerEmail = owner.getEmail();
+            }
+            var initiator = userService.getUserById(deal.getInitiatorId());
+            if (initiator != null && initiator.getEmail() != null) {
+                initiatorEmail = initiator.getEmail();
+            }
+        } catch (Exception e) {
+        }
+
+        if (!ownerEmail.isEmpty() && !initiatorEmail.isEmpty()) {
+            sb.append("<h3>Contact Information</h3>")
+              .append("<p><strong>Owner’s Email:</strong> ")
+              .append(ownerEmail)
+              .append("</p>")
+              .append("<p><strong>Initiator’s Email:</strong> ")
+              .append(initiatorEmail)
+              .append("</p>");
+        }
 
         return sb.toString();
     }
