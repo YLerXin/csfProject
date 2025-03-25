@@ -25,6 +25,13 @@ public class Deal {
     private String paymentIntentId;
 
     private String lastUpdatedBy;
+    private String lastAction;
+    public String getLastAction() {
+        return lastAction;
+    }
+    public void setLastAction(String lastAction) {
+        this.lastAction = lastAction;
+    }
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }

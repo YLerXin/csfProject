@@ -36,5 +36,7 @@ export interface Deal {
     paymentIntentId?: string;
 
     lastUpdatedBy?: string;
+    lastAction?:string;
+
 
 }

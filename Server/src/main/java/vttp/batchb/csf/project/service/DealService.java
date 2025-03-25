@@ -85,7 +85,16 @@ public class DealService {
         }
 
         d.getMessages().add(msg);
-        return dealRepo.saveDeal(d);
+
+        d.setLastAction("MESSAGE");
+
+
+        Deal updated = dealRepo.saveDeal(d);
+
+
+        messagingTemplate.convertAndSend("/topic/deals", updated);
+
+        return updated;
     }
 
 

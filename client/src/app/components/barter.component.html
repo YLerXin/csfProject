@@ -85,7 +85,7 @@
               type="button"
               class="btn btn-sm btn-outline-danger"
               (click)="removeOwnerItem(item)"
-              [disabled]="d.pendingPayment"
+              [disabled]="d.pendingPayment || d.completed || d.rejected"
               >
               x
             </button>
@@ -128,8 +128,7 @@
               type="button"
               class="btn btn-sm btn-outline-danger"
               (click)="removeInitiatorItem(item)"
-              [disabled]="d.pendingPayment"
-            >
+              [disabled]="d.pendingPayment || d.completed || d.rejected"            >
               x
             </button>
             </div>
