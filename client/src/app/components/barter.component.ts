@@ -8,6 +8,7 @@ import { DealService } from '../service/DealService';
 import { Deal, DealMessage, Product } from '../model/Products';
 import { loadStripe, Stripe, StripeCardElement } from '@stripe/stripe-js';
 import { lastValueFrom } from 'rxjs';
+import { WebSocketDealService } from '../service/WebSocketDealService';
 
 
 @Component({
@@ -22,6 +23,9 @@ export class BarterComponent implements OnInit,AfterViewInit  {
   private store = inject(Store);
   private dealSvc = inject(DealService);
   private fb = inject(FormBuilder);
+
+  private wsDealSvc = inject(WebSocketDealService);
+
 
   stripe: Stripe | null = null;
   cardElement?: StripeCardElement;
@@ -53,6 +57,14 @@ export class BarterComponent implements OnInit,AfterViewInit  {
     });
 
     this.dealId = this.route.snapshot.paramMap.get('dealId') || '';
+
+    this.wsDealSvc.dealUpdates$.subscribe((updatedDeal: Deal) => {
+      if (updatedDeal.id === this.dealId) {
+        console.log('Received updated deal via WebSocket', updatedDeal);
+        this.deal = updatedDeal;
+        this.computeFinalDifference();
+      }
+    });
 
     this.store.select(selectUserId).subscribe(uid => {
       this.currentUserId = uid || '';
