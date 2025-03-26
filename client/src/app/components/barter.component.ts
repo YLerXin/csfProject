@@ -162,14 +162,26 @@ export class BarterComponent implements OnInit,AfterViewInit  {
 
   acceptDeal() {
     if (!this.deal?.id) return;
+  
+    const unavailableItems: Product[] = [
+      ...this.deal.ownerItems.filter(item => !item.availability),
+      ...this.deal.initiatorItems.filter(item => !item.availability)
+    ];
+  
+    if (unavailableItems.length > 0) {
+      const names = unavailableItems.map(i => i.productName).join(', ');
+      this.error = `Cannot accept deal. The following item(s) are unavailable: ${names}`;
+      return;  
+    }
+  
     this.dealSvc.acceptDeal(this.deal.id, this.currentUserId).subscribe({
       next: (updatedDeal) => {
         this.deal = updatedDeal;
         this.computeFinalDifference();
         this.router.navigate(['/history']);
       },
-      error: () => {
-        this.error = 'Failed to accept deal';
+      error: (err) => {
+        this.error = err?.error || 'Failed to accept deal.';
       }
     });
   }

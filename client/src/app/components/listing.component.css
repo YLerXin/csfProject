@@ -47,3 +47,8 @@
   color: red;
   margin-top: 8px;
 }
+
+.info-content {
+  flex: 1;
+  overflow-y: auto;
+}
